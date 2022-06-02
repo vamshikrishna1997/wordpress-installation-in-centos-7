@@ -1,0 +1,136 @@
+
+
+
+yum update httpd
+
+yum install httpd
+
+*if firewall is not installed
+
+yum install firewalld -y
+
+systemctl start firewalld
+
+systemctl status firewalld
+
+
+firewall-cmd --permanent --add-service=http
+
+firewall-cmd --permanent --add-service=https
+
+firewall-cmd --reload
+
+systemctl start httpd
+
+systemctl status httpd
+
+
+
+********************MYSQL****************
+
+yum update -y
+
+
+# rpm -Uvh http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm 
+# rpm -ivh mysql-community-release-el7-5.noarch.rpm										--- n*o   
+
+#yum install -y mysql-server mysql
+
+# systemctl start mysqld
+# systemctl enable mysqld
+
+mysql_secure_installation       			      + give password       Digital@123  Digital@1234
+
+
+
+*********PHP*********
+
+yum -y update
+
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+yum install php56w php56w-opcache
+
+yum install php56w-fpm php56w-opcache
+
+php -v
+
+*********************PHP MY ADMIN********************
+
+yum install epel-release
+
+yum install phpmyadminv
+
+vim /etc/httpd/conf.d/phpMyAdmin.conf                      ++serach your ip "whatsmyip" and enter here
+
+systemctl restart httpd
+
+******************** wordpress*******************
+
+*create data base for wordpress
+
+ ==== in mysql =====
+ 
+ 
+ # mysql -u root -p
+Enter password:
+
+## Create database ##
+CREATE DATABASE wordpress;
+
+## Creating new user ##
+CREATE USER wordpress@localhost IDENTIFIED BY "secure_password";
+
+## Grant privileges to database ##
+GRANT ALL ON wordpress.* TO wordpress@localhost;
+
+## FLUSH privileges ##
+
+FLUSH PRIVILEGES;
+
+## Exit ##
+exit
+
+*install wordpress archive file using "wget" and untar.
+
+cd /tmp && wget http://wordpress.org/latest.tar.gz
+
+tar -xvzf latest.tar.gz -C /var/www/html
+
+
+*The above will create the following directory, which will contain our WordPress script:
+
+cd /var/www/html/wordpress
+
+*Now change the ownership of that directory to user “apache”:
+
+# chown -R apache /var/www/html/wordpress
+
+
+* We will create a separate virtual host for our WordPress install. Open /etc/httpd/conf/httpd.conf with your favorite text editor:
+
+
+# vim /etc/httpd/conf/httpd.conf
+
++++ add the bottom code and restart webserver.++
+
+<VirtualHost *:80>
+  ServerAdmin root@3.93.67.193
+  DocumentRoot /var/www/html/wordpress
+  ServerName 3.93.67.193.com
+  ServerAlias www.3.93.67.193.com
+  ErrorLog /var/log/httpd/error-log
+  CustomLog /var/log/httpd/acces-log common
+</VirtualHost>
+
+
+systemctl restart httpd
+
+_____________________________________________
+|  user name: wordpress						|
+|											|
+|  password :secure_password				|
+|___________________________________________|
+
+
