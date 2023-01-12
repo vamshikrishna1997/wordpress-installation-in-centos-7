@@ -60,7 +60,7 @@ php -v
 
 yum install epel-release
 
-yum install phpmyadminv
+yum install phpmyadmin
 
 vim /etc/httpd/conf.d/phpMyAdmin.conf                      ++serach your ip "whatsmyip" and enter here
 
